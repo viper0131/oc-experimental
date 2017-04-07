@@ -1,0 +1,222 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: pega
+    name: pega7-tomcat-ready
+  spec:
+    tags:
+    - annotations:
+        openshift.io/imported-from: pegasystems/pega7-tomcat-ready
+      from:
+        kind: DockerImage
+        name: pegasystems/pega7-tomcat-ready
+      generation: null
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: ""
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: pega
+    name: pega
+  spec: {}
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: pega
+    name: pega
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: pega:latest
+    postCommit: {}
+    resources: {}
+    source:
+      binary: {}
+      type: Binary
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: pega7-tomcat-ready:latest
+      type: Docker
+    triggers:
+    - github:
+        secret: kxG4WfIDunfdVmeTUAT5
+      type: GitHub
+    - generic:
+        secret: rjtsWJIQ03EnUmnGExCu
+      type: Generic
+  status:
+    lastVersion: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: pega
+    name: pega
+  spec:
+    replicas: 1
+    selector:
+      app: pega
+      deploymentconfig: pega
+    strategy:
+      resources: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: pega
+          deploymentconfig: pega
+      spec:
+        containers:
+        - image: pega:latest
+          name: pega
+          ports:
+          - containerPort: 5703
+            protocol: TCP
+          - containerPort: 5710
+            protocol: TCP
+          - containerPort: 47100
+            protocol: TCP
+          - containerPort: 5702
+            protocol: TCP
+          - containerPort: 5704
+            protocol: TCP
+          - containerPort: 5706
+            protocol: TCP
+          - containerPort: 5705
+            protocol: TCP
+          - containerPort: 5707
+            protocol: TCP
+          - containerPort: 5709
+            protocol: TCP
+          - containerPort: 8090
+            protocol: TCP
+          - containerPort: 5701
+            protocol: TCP
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 9001
+            protocol: TCP
+          - containerPort: 5708
+            protocol: TCP
+          resources: {}
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - pega
+        from:
+          kind: ImageStreamTag
+          name: pega:latest
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: pega
+    name: pega
+  spec:
+    ports:
+    - name: 5701-tcp
+      port: 5701
+      protocol: TCP
+      targetPort: 5701
+    - name: 5702-tcp
+      port: 5702
+      protocol: TCP
+      targetPort: 5702
+    - name: 5703-tcp
+      port: 5703
+      protocol: TCP
+      targetPort: 5703
+    - name: 5704-tcp
+      port: 5704
+      protocol: TCP
+      targetPort: 5704
+    - name: 5705-tcp
+      port: 5705
+      protocol: TCP
+      targetPort: 5705
+    - name: 5706-tcp
+      port: 5706
+      protocol: TCP
+      targetPort: 5706
+    - name: 5707-tcp
+      port: 5707
+      protocol: TCP
+      targetPort: 5707
+    - name: 5708-tcp
+      port: 5708
+      protocol: TCP
+      targetPort: 5708
+    - name: 5709-tcp
+      port: 5709
+      protocol: TCP
+      targetPort: 5709
+    - name: 5710-tcp
+      port: 5710
+      protocol: TCP
+      targetPort: 5710
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: 8090-tcp
+      port: 8090
+      protocol: TCP
+      targetPort: 8090
+    - name: 9001-tcp
+      port: 9001
+      protocol: TCP
+      targetPort: 9001
+    - name: 47100-tcp
+      port: 47100
+      protocol: TCP
+      targetPort: 47100
+    selector:
+      app: pega
+      deploymentconfig: pega
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}
